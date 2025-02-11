@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Исторический Квиз</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('https://source.unsplash.com/1600x900/?history') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            margin: auto;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        .question {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .options button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .options button:hover {
+            background-color: #ffcc00;
+        }
+        .correct {
+            background-color: green !important;
+        }
+        .wrong {
+            background-color: red !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Исторический Квиз</h1>
+        <div id="quiz"></div>
+        <button onclick="nextQuestion()" style="margin-top: 20px; padding: 10px; font-size: 16px;">Следующий вопрос</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Какой период охватывает ранний палеолит?",
+                options: ["2,6 млн – 140 тыс. лет до н.э.", "1 млн – 50 тыс. лет до н.э.", "3 млн – 200 тыс. лет до н.э.", "500 тыс. – 100 тыс. лет до н.э."],
+                correct: 0
+            },
+            {
+                question: "Где впервые были обнаружены останки древнего человека?",
+                options: ["В Казахстане", "В Кении между горой Килиманджаро и озером Виктория", "В Египте", "В Китае"],
+                correct: 1
+            },
+            {
+                question: "Какая наука изучает историческое прошлое по вещественным источникам?",
+                options: ["Биология", "Археология", "География", "Антропология"],
+                correct: 1
+            },
+            {
+                question: "Как называется самый древний человек на Земле?",
+                options: ["Человек разумный", "Неандерталец", "Человек умелый", "Питекантроп"],
+                correct: 2
+            },
+            {
+                question: "Как назывались племена саков, жившие в Семиречье?",
+                options: ["Саки-хаомаварга", "Саки-тиграхауда", "Саки-парадарайя", "Саки-аримаспы"],
+                correct: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            const quizDiv = document.getElementById("quiz");
+            quizDiv.innerHTML = "";
+            let q = questions[currentQuestionIndex];
+
+            let questionEl = document.createElement("div");
+            questionEl.classList.add("question");
+            questionEl.innerText = q.question;
+            quizDiv.appendChild(questionEl);
+
+            let optionsDiv = document.createElement("div");
+            optionsDiv.classList.add("options");
+
+            q.options.forEach((option, index) => {
+                let btn = document.createElement("button");
+                btn.innerText = option;
+                btn.onclick = () => checkAnswer(btn, index === q.correct);
+                optionsDiv.appendChild(btn);
+            });
+
+            quizDiv.appendChild(optionsDiv);
+        }
+
+        function checkAnswer(button, isCorrect) {
+            if (isCorrect) {
+                button.classList.add("correct");
+            } else {
+                button.classList.add("wrong");
+            }
+            disableButtons();
+        }
+
+        function disableButtons() {
+            document.querySelectorAll(".options button").forEach(btn => btn.disabled = true);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                document.getElementById("quiz").innerHTML = "<h2>Квиз завершен!</h2>";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
